@@ -1,0 +1,10 @@
+<x-layout title="Parent corner"><div class="section-heading"><div><span class="eyebrow">PARENT CORNER</span><h1>Hello, {{ auth()->user()->name }}!</h1><p>Every little step is something to celebrate.</p></div><a class="button primary" href="{{ route('parent.children.create') }}">+ Add a child</a></div><div class="stats-grid"><div class="stat-box"><span>Little learners</span><strong>{{ $children->count() }}</strong></div><div class="stat-box"><span>Learning stars</span><strong>★ {{ $children->sum('stars_sum_stars') }}</strong></div><div class="stat-box"><span>Lessons completed</span><strong>{{ $children->sum('progresses_count') }}</strong></div></div><h2>Your little learners</h2><div class="profile-grid">
+@forelse($children as $child)<article class="panel profile-card"><div class="profile-avatar">
+@if(str_starts_with($child->avatar??'','avatars/'))<img src="{{ Storage::url($child->avatar) }}" alt="{{ $child->name }}">
+@else{{ ['fox'=>'🦊','bear'=>'🐻','rabbit'=>'🐰','cat'=>'🐱'][$child->avatar]??'🌟' }}
+@endif</div><h2>{{ $child->name }}</h2><p>{{ $child->age !== null ? $child->age.' years old · ' : '' }}{{ ucfirst(str_replace('-',' ',$child->learning_level)) }}</p><div class="profile-meta"><span>★ {{ $child->stars_sum_stars??0 }} stars</span><span>☀ {{ $child->current_streak }} day streak</span></div><a class="button primary" href="{{ route('child.dashboard',$child) }}">Let's learn →</a><div class="actions"><a href="{{ route('parent.children.progress',$child) }}">View progress</a><a href="{{ route('parent.children.edit',$child) }}">Edit profile</a></div><h4>Recent learning</h4>
+@forelse($child->progresses as $progress)<p>{{ $progress->lesson?->title }} · {{ $progress->completion_percentage }}%</p>
+@empty<p>Ready for a first discovery!</p>
+@endforelse</article>
+@empty<div class="panel"><h2>A new adventure starts here.</h2><p>Add your child's profile to start exploring.</p><a href="{{ route('parent.children.create') }}" class="button primary">Create first profile</a></div>
+@endforelse</div></x-layout>

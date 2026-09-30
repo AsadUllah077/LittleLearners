@@ -1,0 +1,4 @@
+<x-layout title="Play and discover" :child="$child"><a class="back-link" href="{{ route('child.dashboard',$child) }}">← My learning</a><div class="section-heading"><div><span class="eyebrow">LEARNING DISGUISED AS PLAY</span><h1>Ready, set, discover!</h1><p>No timers. Take your time and have fun.</p></div><span class="auth-art">🎲</span></div><div class="profile-grid">
+@forelse($activities as $activity)<article class="panel"><span class="pill">{{ $activity->lesson->category->name }} · {{ $activity->difficulty }}</span><h2>{{ $activity->title }}</h2><p>{{ $activity->instructions }}</p><a class="button primary" href="{{ $activity->activity_type==='tracing'?route('child.lesson',[$child,$activity->lesson]).'#tracing':route('child.activity',[$child,$activity]) }}">Let's play →</a></article>
+@empty<p>No games available yet.</p>
+@endforelse</div>{{ $activities->links() }}</x-layout>
